@@ -3,7 +3,7 @@
  * Author: Carolyn Yao, Students: Choun H. Lee, Divya Samaroo, Kenneth Hill, Mohammed Rahat
  * Does this compile or finish running within 5 seconds? Y/N Yes
  */
-
+// Test
 public class RunningTrials {
 
   // Do not change the parameters!
@@ -11,52 +11,23 @@ public class RunningTrials {
 	  	int minTests = 0;
 	  	//*******************************************************************************************************
 	  	// Beginning of our code
-	  	
-	  	/* Note: I found the same example on Wikipedia of the Egg Drop Puzzle. 
-	  	 * I think this puzzle is too vague. The story doesn't explain the logic behind the code properly
-	  	 * especially the part where if 1 egg is available, you check all the floors. That only adds to
-	  	 * confusion. Logically, minimum test you can run should be only 1, because if the egg breaks 
-	  	 * at the first attempt, there's no need to test anymore, and since the story appears to be
-	  	 * we are taking in all possibility into consideration, the MINIMUM amongst all possibility IS 1
-	  	 * I think this is just poor choice as assignment as students are more or less forced to research
-		 * this problem to even get firm grasp of what the problem is asking for. 
-		 * I'd suggest giving students different Dynamic Programming problem in the future. This is probably 
-		 * a good example of DP in order to memorize for the preparation of job interview questions, so 
-		 * it might be a good example to cover during class lecture as an example of DP, but leaving students 
-		 * to do this on their own is practically forcing them to research the material in order to get 
-		 * some kind of context to understand the logic behind the story and algorithm, which in essence is the
-		 * answer to the question, robbing students chance to apply critical thinking and practice DP
-	  	 * - Choun
-	  	 * */
-	  	
-	  	// If there is less than 1 possible speeds, only 1 test required 
-	  	if(possibleSpeeds <= 1)
-	        return possibleSpeeds;
-	    
-	  	// If there is only 1 day test all possible speeds
-	    if(days == 1)
-	        return days;
-	    
-	    // If there is 0 day, can't test so return 0
-	    if(days == 0)
-	    	return 0;
-	    
+	  	if (possibleSpeeds == 0 || possibleSpeeds == 1)
+	  		return possibleSpeeds;
+	  	if (days == 1)
+	  		return possibleSpeeds;
 	    minTests = Integer.MAX_VALUE;
-	    int result = 0;
-	    // Comparison between possibleSpeeds -= 1 and days -= 1, to finding the converging point
-	    for(int i = 1; i <= days; i++)
-	    {
-	    	result = Math.max(runTrialsRecur(possibleSpeeds - 1, i - 1), runTrialsRecur(possibleSpeeds, days - i));
-	    	if(result < minTests)
-	    		minTests = result;
+	    int res;
+	    for (int i = 1; i <= possibleSpeeds; i++) {
+	    	res = Math.max(runTrialsRecur(i-1,days-i), runTrialsRecur(possibleSpeeds-i,days));
+	    	if (res < minTests)
+	    		minTests = res;
 	    }
-	    	
 	    return minTests + 1;
-	    
+	  
 	  // End of our code
 	  //*******************************************************************************************************
   }
-
+  
   // Optional:
   // Pick whatever parameters you want to, just make sure to return an int.
   public int runTrialsMemoized() {
@@ -114,12 +85,12 @@ public class RunningTrials {
       RunningTrials running = new RunningTrials();
 
       // Do not touch the below lines of code, your output will automatically be formatted
-      int minTrials1Recur = running.runTrialsRecur(12, 5);
-      int minTrials1Bottom = running.runTrialsBottomUp(12, 5);
+      int minTrials1Recur = running.runTrialsRecur(6,1);
+      int minTrials1Bottom = running.runTrialsBottomUp(6, 2);
       int minTrials2Recur = running.runTrialsRecur(20, 8);
       int minTrials2Bottom = running.runTrialsBottomUp(20, 8);
-      System.out.println("12 speeds, 5 weeks: " + minTrials1Recur + " " + minTrials1Bottom);
-      System.out.println("20 speeds, 8 weeks: " + minTrials2Recur + " " + minTrials2Bottom);
+      System.out.println("6 speeds, 2 days: " + minTrials1Recur + " " + minTrials1Bottom);
+      System.out.println("20 speeds, 8 days: " + minTrials2Recur + " " + minTrials2Bottom);
       
   }
 }
