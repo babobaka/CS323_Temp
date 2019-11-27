@@ -16,18 +16,18 @@ public class RunningTrials {
 	  	if (days == 1)
 	  		return possibleSpeeds;
 	    minTests = Integer.MAX_VALUE;
-	    int res;
+	    int results;
 	    for (int i = 1; i <= possibleSpeeds; i++) {
-	    	res = Math.max(runTrialsRecur(i-1,days-i), runTrialsRecur(possibleSpeeds-i,days));
-	    	if (res < minTests)
-	    		minTests = res;
+	    	results = Math.max(runTrialsRecur(i-1,days-i), runTrialsRecur(possibleSpeeds-i,days));
+	    	if (results < minTests)
+	    		minTests = results;
 	    }
 	    return minTests + 1;
-	  
+
 	  // End of our code
 	  //*******************************************************************************************************
   }
-  
+
   // Optional:
   // Pick whatever parameters you want to, just make sure to return an int.
   public int runTrialsMemoized() {
@@ -42,42 +42,26 @@ public class RunningTrials {
     // Your code here
     //*******************************************************************************************************
   	// Beginning of our code
-    
-    int tests[][] = new int[possibleSpeeds + 1][days + 1];
-    
-    // Initialization of our Dynamic programming table, 0 for 0th day and 1 for 1st day
-    for(int i = 1; i <= possibleSpeeds; i++)
-    {
-    	tests[i][0] = 0;
-    	tests[i][1] = 1;
+    int[][] runTrials = new int[days+1][possibleSpeeds + 1];
+    int results;
+    for (int i = 1; i <= days; i++){
+      runTrials[i][1] = 1;
+      runTrials[i][0] = 0;
     }
-    // Filling up for the case when days = 1, and have to run full number of tests.
-    for(int i = 1; i <= days; i++)
-    {
-    	tests[1][i] = i;
+    for (int i = 1; i <= possibleSpeeds; i++){
+      runTrials[1][i] = i;
     }
-    // temp variable for max comparison
-    int result = 0;
-    // DP code. Two outer nested loops goes through the DP table of 2D array
-    for (int i = 2; i <= possibleSpeeds; i++) 
-    { 
-        for (int j = 2; j <= days; j++) 
-        { 
-        	// Max Integer to avoid problems with below comparison set up
-            tests[i][j] = Integer.MAX_VALUE; 
-            // Same optimal substructure of the recursion code above
-            for (int k = 1; k <= j; k++) 
-            { 
-                 result = 1 + Math.max(tests[i - 1][k - 1], tests[i][j - k]); 
-                 if (result < tests[i][j])
-                    tests[i][j] = result; 
-            } 
-        } 
-    } 
-    minTests = tests[possibleSpeeds][days];
-	// End of our code
-	//*******************************************************************************************************
-
+    for (int i = 2; i <= days; i++){
+      for (int j = 2; j <= possibleSpeeds; j++){
+        runTrials[i][j] = Integer.MAX_VALUE;
+        for (int k = 1; k <= j; k++){
+          results = 1 + Math.max(runTrials[i-1][k-1],runTrials[i][j-k]);
+          if(results < runTrials[i][j])
+          runTrials[i][j] = results;
+         }
+      }
+    }
+    minTests = runTrials[days][possibleSpeeds];
     return minTests;
   }
 
@@ -85,12 +69,12 @@ public class RunningTrials {
       RunningTrials running = new RunningTrials();
 
       // Do not touch the below lines of code, your output will automatically be formatted
-      int minTrials1Recur = running.runTrialsRecur(6,1);
+      int minTrials1Recur = running.runTrialsRecur(6,2);
       int minTrials1Bottom = running.runTrialsBottomUp(6, 2);
       int minTrials2Recur = running.runTrialsRecur(20, 8);
       int minTrials2Bottom = running.runTrialsBottomUp(20, 8);
       System.out.println("6 speeds, 2 days: " + minTrials1Recur + " " + minTrials1Bottom);
       System.out.println("20 speeds, 8 days: " + minTrials2Recur + " " + minTrials2Bottom);
-      
+
   }
 }
